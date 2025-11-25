@@ -1,5 +1,12 @@
+import sys
+import os
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
 import numpy as np
-import config
+import src.config as config
 
 def inverted_pendulum_dynamics(t, x_state, u_func=None, params=config):
     """
@@ -24,8 +31,11 @@ def inverted_pendulum_dynamics(t, x_state, u_func=None, params=config):
     x, x_dot, theta, theta_dot = x_state
     
     # Calculate the control force F
-    F = u_func(x_state) if u_func is not None else 0.0
-    
+    F = u_func(t, x_state) if u_func is not None else 0.0
+
+    # x_ddot = (F + m*L*np.sin(theta)*theta_dot**2 - (m**2*g*L**2*np.sin(theta)*np.cos(theta)/(I+m*L**2)) - b*x_dot) / ((M+m) - m**2*L**2*np.cos(theta)**2/(I+m*L**2))
+    # theta_ddot = (F*m*L*np.cos(theta) + (M+m)*m*g*L*np.sin(theta) + m**2*L**2*np.sin(theta)*np.cos(theta)*theta_dot**2 - b*m*L*x_dot*np.cos(theta)) / ((M+m)*(I+m*L**2) - m**2*L**2*np.cos(theta)**2)
+
     # We need to solve a 2x2 linear system M * [x_ddot, theta_ddot]^T = B for the accelerations
     # [ M11  M12 ] [ x_ddot     ] = [ B1 ]
     # [ M21  M22 ] [ theta_ddot ] = [ B2 ]

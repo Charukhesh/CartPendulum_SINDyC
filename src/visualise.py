@@ -2,8 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.patches import Rectangle
-import config
-
+import src.config as config
 def animate_pendulum(t, x_states, save_path=None):
     """
     Creates an animation of the inverted pendulum system from simulation data
@@ -12,10 +11,10 @@ def animate_pendulum(t, x_states, save_path=None):
     num_frames_target = 300
     total_frames = len(t)
     animation_step = max(1, total_frames // num_frames_target)
-    
+
     t_anim = t[::animation_step]
     x_states_anim = x_states[::animation_step, :]
-    
+
     # Extract state data for plotting
     cart_x = x_states_anim[:, 0]
     pendulum_theta = x_states_anim[:, 2]

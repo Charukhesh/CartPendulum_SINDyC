@@ -1,6 +1,6 @@
 import numpy as np
 import control as ct
-import config
+import src.config as config
 
 def get_linearized_model(params=config):
     """
@@ -47,9 +47,5 @@ def design_lqr_controller(params=config):
     R = np.array([[params.R]]) # R must be a 2D array
     
     # Use the control library to solve the continuous-time algebraic Riccati equation
-    K, _, _ = ct.lqr(A, B, Q, R)
-    
-    print("LQR Gain Matrix (K) designed:")
-    print(K)
-    
+    K, _, _ = ct.lqr(A, B, Q, R) 
     return K
